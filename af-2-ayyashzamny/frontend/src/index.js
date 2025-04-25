@@ -21,7 +21,7 @@ root.render(
       </BrowserRouter>
     </ClerkProvider>
   </React.StrictMode>
-);
+); 
 
 
 reportWebVitals();
