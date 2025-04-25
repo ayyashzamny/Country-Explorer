@@ -1,17 +1,29 @@
 // App.js
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 import CountryExplorer from "./pages/CountryExplorer";
-import MapPage from "./pages/MapPage";
+import { SignIn, SignUp } from "@clerk/clerk-react";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<CountryExplorer />} />
-        <Route path="/map" element={<MapPage />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <>
+            <SignedIn>
+              <CountryExplorer />
+            </SignedIn>
+            <SignedOut>
+              <RedirectToSignIn />
+            </SignedOut>
+          </>
+        }
+      />
+      <Route path="/sign-in/*" element={<SignIn routing="path" path="/sign-in" />} />
+      <Route path="/sign-up/*" element={<SignUp routing="path" path="/sign-up" />} />
+    </Routes>
   );
 }
 

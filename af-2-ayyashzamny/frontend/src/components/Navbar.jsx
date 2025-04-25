@@ -1,24 +1,27 @@
 // src/components/Navbar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { useUser, SignOutButton } from '@clerk/clerk-react';
 
 export default function Navbar() {
+    const { user } = useUser();
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-            <div className="container">
-                <a className="navbar-brand fw-bold" href="#">Country Explorer</a>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav ms-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/">Cards</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/map">Map</Link>
-                        </li>
-                    </ul>
+            <div className="container d-flex justify-content-between align-items-center">
+                <a className="navbar-brand fw-bold" href="#">
+                    Country Explorer
+                </a>
+                <div className="d-flex align-items-center gap-3 text-white">
+                    {user && (
+                        <>
+                            <span className="fw-semibold">
+                                Hi, {user.firstName || user.username || "User"}
+                            </span>
+                            <SignOutButton>
+                                <button className="btn btn-outline-light btn-sm">Logout</button>
+                            </SignOutButton>
+                        </>
+                    )}
                 </div>
             </div>
         </nav>
