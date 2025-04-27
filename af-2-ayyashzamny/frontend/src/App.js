@@ -1,28 +1,24 @@
-// App.js
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import CountryExplorer from "./pages/CountryExplorer";
-import { SignIn, SignUp } from "@clerk/clerk-react";
+import LoginWithOTP from './pages/auth/LoginWithOTP';
+
+const ProtectedRoute = ({ children }) => {
+  // Check if the user is logged in (you can use localStorage, context, etc.)
+  const isLoggedIn = localStorage.getItem('authToken'); // Adjust according to your auth setup
+
+  if (!isLoggedIn) {
+    return <Navigate to="/auth/login" replace />;
+  }
+
+  return children;
+};
 
 function App() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <>
-            <SignedIn>
-              <CountryExplorer />
-            </SignedIn>
-            <SignedOut>
-              <RedirectToSignIn />
-            </SignedOut>
-          </>
-        }
-      />
-      <Route path="/sign-in/*" element={<SignIn routing="path" path="/sign-in" />} />
-      <Route path="/sign-up/*" element={<SignUp routing="path" path="/sign-up" />} />
+      <Route path="/" element={<ProtectedRoute><CountryExplorer /></ProtectedRoute>} />
+      <Route path="/auth/login" element={<LoginWithOTP />} />
     </Routes>
   );
 }
