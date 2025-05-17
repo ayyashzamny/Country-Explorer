@@ -7,22 +7,36 @@ export default function Navbar() {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-            <div className="container d-flex justify-content-between align-items-center">
-                <a className="navbar-brand fw-bold" href="#">
+            <div className="container-fluid">
+
+                {/* left – brand */}
+                <a className="navbar-brand fw-bold ms-3" href="#">
                     Country Explorer
                 </a>
-                <div className="d-flex align-items-center gap-3 text-white">
-                    {user && (
-                        <>
-                            <span className="fw-semibold">
-                                Hi, {user.firstName || user.username || "User"}
-                            </span>
-                            <SignOutButton>
-                                <button className="btn btn-outline-light btn-sm">Logout</button>
-                            </SignOutButton>
-                        </>
-                    )}
+
+                {/* center – menu */}
+                <div className="mx-auto">
+                    <ul className="navbar-nav mb-2 mb-lg-0">
+                        <li className="nav-item mx-2">
+                            <a className="nav-link" href="/">Home</a>
+                        </li>
+                        <li className="nav-item mx-2">
+                            <a className="nav-link" href="/game">Game</a>
+                        </li>
+                    </ul>
                 </div>
+
+                {/* right – user greeting + logout */}
+                {user && (
+                    <div className="d-flex align-items-center gap-3 me-3 text-white">
+                        <span className="fw-semibold">
+                            Hi, {user.firstName || user.username || 'User'}
+                        </span>
+                        <SignOutButton>
+                            <button className="btn btn-outline-light btn-sm">Logout</button>
+                        </SignOutButton>
+                    </div>
+                )}
             </div>
         </nav>
     );

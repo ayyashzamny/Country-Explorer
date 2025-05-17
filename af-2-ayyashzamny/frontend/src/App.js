@@ -3,6 +3,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 import CountryExplorer from "./pages/CountryExplorer";
+import CountryFlagGame from "./pages/Country-flag-quiz";
 import { SignIn, SignUp } from "@clerk/clerk-react";
 
 function App() {
@@ -14,6 +15,19 @@ function App() {
           <>
             <SignedIn>
               <CountryExplorer />
+            </SignedIn>
+            <SignedOut>
+              <RedirectToSignIn />
+            </SignedOut>
+          </>
+        }
+      />
+      <Route
+        path="/game"
+        element={
+          <>
+            <SignedIn>
+              <CountryFlagGame />
             </SignedIn>
             <SignedOut>
               <RedirectToSignIn />
