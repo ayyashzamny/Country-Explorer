@@ -10,6 +10,8 @@ export default function CountryFlagGame() {
     const [options, setOptions] = useState([]);
     const [correctCountry, setCorrectCountry] = useState(null);
     const [gameOver, setGameOver] = useState(false);
+    const [timer, setTimer] = useState(15); // Timer state
+    const [timerRunning, setTimerRunning] = useState(false); // To control the timer's lifecycle
 
     useEffect(() => {
         fetch('https://restcountries.com/v3.1/all')
@@ -41,6 +43,19 @@ export default function CountryFlagGame() {
         }
     }, [gameOver, score]);
 
+    useEffect(() => {
+        let interval;
+        if (timerRunning && timer > 0) {
+            interval = setInterval(() => {
+                setTimer((prev) => prev - 1);
+            }, 1000);
+        } else if (timer === 0) {
+            handleAnswer(null); // Automatically move to next question when time is up
+        }
+
+        return () => clearInterval(interval);
+    }, [timerRunning, timer]);
+
     const generateQuestion = () => {
         const correct = countries[Math.floor(Math.random() * countries.length)];
         const optionsSet = new Set([correct]);
@@ -54,12 +69,15 @@ export default function CountryFlagGame() {
 
         setCorrectCountry(correct);
         setOptions(shuffledOptions);
+        setTimer(15); // Reset timer
+        setTimerRunning(true); // Start the timer
     };
 
     const handleAnswer = (country) => {
-        if (country.name.common === correctCountry.name.common) {
+        if (country && country.name.common === correctCountry.name.common) {
             setScore(prev => prev + 1);
         }
+        setTimerRunning(false); // Stop the timer
         setCurrentQuestion(prev => prev + 1);
     };
 
@@ -111,6 +129,27 @@ export default function CountryFlagGame() {
                             className="progress-bar bg-primary"
                             style={{ width: `${(currentQuestion / 10) * 100}%` }}
                         />
+                    </div>
+                </div>
+
+                {/* Circular Timer */}
+                <div className="text-center mb-4">
+                    <div className="position-relative">
+                        <svg width="100" height="100" viewBox="0 0 100 100" className="mx-auto">
+                            <circle cx="50" cy="50" r="45" stroke="#ddd" strokeWidth="5" fill="none" />
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="45"
+                                stroke="#007bff"
+                                strokeWidth="5"
+                                fill="none"
+                                strokeDasharray={Math.PI * 2 * 45}
+                                strokeDashoffset={(1 - timer / 15) * Math.PI * 2 * 45}
+                                style={{ transition: 'stroke-dashoffset 1s linear' }}
+                            />
+                        </svg>
+                        <p className="fs-4">{timer}s</p>
                     </div>
                 </div>
 
