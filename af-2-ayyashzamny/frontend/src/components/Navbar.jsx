@@ -6,7 +6,7 @@ export default function Navbar() {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-            <div className="container-fluid">
+            <div className="container px-4 px-md-5">
                 {/* Left – Brand */}
                 <a className="navbar-brand fw-bold" href="#">
                     Country Explorer
